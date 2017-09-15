@@ -6,7 +6,7 @@
     </div>
 
     <div class="codemirror-container">
-      <codemirror :options="editorOption" v-model="code"></codemirror>
+      <textarea class="form-control" rows="3" v-model="code"></textarea>
     </div>
 
     <button type="button" class="btn btn-primary" @click="submitCode">Parse Addresses</button>
@@ -40,15 +40,11 @@
 </template>
 
 <script>
-import {codemirror} from 'vue-codemirror';
 import {convertArrayOfObjectsToCSV, downloadCSV} from '../helpers';
 import _ from 'lodash';
 
 export default {
   name: 'mail-parser',
-  components: {
-    codemirror
-  },
   computed: {
     numberOfParsedAddresses() {
       return this.parsedMailArray.length;
