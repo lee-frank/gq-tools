@@ -7,27 +7,23 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Mail Parser <span class="sr-only">(current)</span></a>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Mail Parser</router-link>
           </li>
         </ul>
       </div>
     </nav>
 
     <div class="container">
-      <mail-parser></mail-parser>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import MailParser from './MailParser';
-
 export default {
   name: 'Home',
-  components: {
-    MailParser
-  },
+  components: {},
   data () {
     return {
     };
@@ -39,5 +35,8 @@ export default {
 <style scoped>
 .main {
   margin: 20px 0px 20px 0px;
+}
+.container {
+  margin: 10px 0px 10px 0px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <p>This tool will help parse Canadian postal codes from single cell mailing addresses.</p>
+      <p>This tool will help parse Canadian mailing addresses providing they're all in one cell.</p>
       <span>1. Cut/paste mail addresses below (one on each line). Click PARSE ADDRESSES when ready.</span>
     </div>
 
@@ -23,14 +23,20 @@
 
     <table class="preview">
       <tr v-show="numberOfParsedAddresses > 0">
-        <th class="preview-row"></th>
+        <th class="preview-row">#</th>
         <th align="left">mail_address1</th>
+        <th align="left">mail_city</th>
+        <th align="left">mail_province</th>
         <th align="left">mail_postal</th>
+        <th align="left">mail_country</th>
       </tr>
       <tr v-for="(value, index) in parsedMailArray">
         <td class="preview-row">{{index+1}}</td>
         <td>{{value.mail_address1}}</td>
+        <td>{{value.mail_city}}</td>
+        <td>{{value.mail_province}}</td>
         <td>{{value.mail_postal}}</td>
+        <td>{{value.mail_country}}</td>
       </tr>
     </table>
     <button type="button" class="btn btn-primary" :disabled="numberOfParsedAddresses === 0" @click="downloadCSV">
@@ -40,11 +46,11 @@
 </template>
 
 <script>
+import ContactParser from 'contact-parser';
 import {convertArrayOfObjectsToCSV, downloadCSV} from '../helpers';
-import _ from 'lodash';
 
 export default {
-  name: 'mail-parser',
+  name: 'MailParser',
   computed: {
     numberOfParsedAddresses() {
       return this.parsedMailArray.length;
@@ -54,30 +60,30 @@ export default {
     makeArrayFromNewline(addressStrings) {
       return addressStrings.split('\n');
     },
-    submitCode() {
+    async submitCode() {
       let addressArray = this.makeArrayFromNewline(this.code);
+      this.parsedMailArray = await this.parseAddresses(addressArray);
+      this.CSVData = this.convertToCSV(this.parsedMailArray);
+    },
+    async parseAddresses(mailArray) {
+      let parser = new ContactParser();
       let parsedMailArray = [];
 
-      addressArray.forEach((address) => {
-        let maildata = {
-          full_address: address.trim(),
-          mail_address1: '',
-          mail_postal: ''
-        };
-        let postalMatches = maildata.full_address.match(/([0-9]{5})|([a-z][0-9][a-z] ?[0-9][a-z][0-9])/gi) || [];
+      mailArray.forEach((address) => {
+        let parsed = parser.parse(address);
 
-        // Check if there's a match
-        if (postalMatches.length > 0) {
-          maildata.mail_postal = postalMatches[0];
-          maildata.mail_address1 = _.replace(maildata.full_address, maildata.mail_postal, '');
-        } else {
-          maildata.mail_postal = 'Not Found';
-          maildata.mail_address1 = maildata.full_address;
-        }
-        parsedMailArray.push(maildata);
+        let obj = {
+          other: parsed.name,
+          mail_address1: parsed.address,
+          mail_address2: '',
+          mail_city: parsed.city,
+          mail_province: parsed.province,
+          mail_postal: parsed.postal,
+          mail_country: parsed.country
+        };
+        parsedMailArray.push(obj);
       });
-      this.parsedMailArray = parsedMailArray;
-      this.CSVData = this.convertToCSV(parsedMailArray);
+      return parsedMailArray;
     },
     convertToCSV(objectArray) {
       let CSVData = convertArrayOfObjectsToCSV(objectArray);
