@@ -6,7 +6,7 @@
     </div>
 
     <div class="codemirror-container">
-      <textarea class="form-control" rows="3" v-model="code"></textarea>
+      <textarea class="form-control" rows="8" v-model="code"></textarea>
     </div>
 
     <button type="button" class="btn btn-primary" @click="submitCode">Parse Addresses</button>
@@ -29,6 +29,7 @@
         <th align="left">mail_province</th>
         <th align="left">mail_postal</th>
         <th align="left">mail_country</th>
+        <th align="left">other</th>
       </tr>
       <tr v-for="(value, index) in parsedMailArray">
         <td class="preview-row">{{index+1}}</td>
@@ -37,6 +38,7 @@
         <td>{{value.mail_province}}</td>
         <td>{{value.mail_postal}}</td>
         <td>{{value.mail_country}}</td>
+        <td>{{value.other}}</td>
       </tr>
     </table>
     <button type="button" class="btn btn-primary" :disabled="numberOfParsedAddresses === 0" @click="downloadCSV">
@@ -71,15 +73,14 @@ export default {
 
       mailArray.forEach((address) => {
         let parsed = parser.parse(address);
-
         let obj = {
-          other: parsed.name,
           mail_address1: parsed.address,
           mail_address2: '',
           mail_city: parsed.city,
           mail_province: parsed.province,
           mail_postal: parsed.postal,
-          mail_country: parsed.country
+          mail_country: parsed.country,
+          other: `${parsed.name} ${parsed.email} ${parsed.phone} ${parsed.website}`
         };
         parsedMailArray.push(obj);
       });
@@ -117,10 +118,14 @@ export default {
 </script>
 
 <style scoped>
+.codemirror-container .form-control  {
+  font-size: 14px;
+}
 .codemirror-container {
   border: 1px solid #c9c9c9;
   border-radius: 3px;
   margin-bottom:10px;
+  font-size: 14px;
 }
 .right-align {
   display: flex;
@@ -131,6 +136,8 @@ table.preview {
    height:200px;
    display:block;
    border-collapse:collapse;
+   font-size: 14px;
+   resize: both;
 
    background-color: #FFFFFF;
    border: 1px solid #c9c9c9;
