@@ -78,7 +78,11 @@
           </tr>                  
         </tbody>
       </table>
-      Please confirm this timeline works for your schedule and feel free to get in touch with additional questions.    
+      
+      <p>Please confirm this timeline works for your schedule and feel free to get in touch with additional questions.</p>
+      <p>Please advise us on the cut off time with regards to your owners being able to submit electronic proxies for the meeting. From experience, we see that property managers typically set the cut off time to be at 12PM on the day of the AGM, but feel free to set your own.</p>
+      <p>Please note that all documents must be received by 4 PM on the days scheduled above, otherwise they may not be processed until the next business day.</p>
+      <p>We look forward to working with you.</p>
       </div>
   </div>
 </template>
@@ -134,7 +138,6 @@ export default {
         .format('dddd, MMMM DD, YYYY');
     }
   },
-  methods: {},
   data() {
     return {
       startDate: ''
