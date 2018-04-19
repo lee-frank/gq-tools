@@ -10,6 +10,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/">Mail Parser</router-link>
           </li>
+          <li class="nav-item">        
+            <router-link class="nav-link" to="/timeline">Timeline</router-link>
+          </li>
         </ul>
       </div>
     </nav>
@@ -24,9 +27,8 @@
 export default {
   name: 'Home',
   components: {},
-  data () {
-    return {
-    };
+  data() {
+    return {};
   }
 };
 </script>

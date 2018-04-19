@@ -31,7 +31,9 @@
         <th align="left">mail_country</th>
         <th align="left">other</th>
       </tr>
-      <tr v-for="(value, index) in parsedMailArray">
+      <tr 
+        :key="index"
+        v-for="(value, index) in parsedMailArray">
         <td class="preview-row">{{index+1}}</td>
         <td>{{value.mail_address1}}</td>
         <td>{{value.mail_city}}</td>
@@ -71,7 +73,7 @@ export default {
       let parser = new ContactParser();
       let parsedMailArray = [];
 
-      mailArray.forEach((address) => {
+      mailArray.forEach(address => {
         let parsed = parser.parse(address);
         let obj = {
           mail_address1: parsed.address,
@@ -80,7 +82,9 @@ export default {
           mail_province: parsed.province,
           mail_postal: parsed.postal,
           mail_country: parsed.country,
-          other: `${parsed.name} ${parsed.email} ${parsed.phone} ${parsed.website}`
+          other: `${parsed.name} ${parsed.email} ${parsed.phone} ${
+            parsed.website
+          }`
         };
         parsedMailArray.push(obj);
       });
@@ -118,31 +122,31 @@ export default {
 </script>
 
 <style scoped>
-.codemirror-container .form-control  {
+.codemirror-container .form-control {
   font-size: 14px;
 }
 .codemirror-container {
   border: 1px solid #c9c9c9;
   border-radius: 3px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   font-size: 14px;
 }
 .right-align {
   display: flex;
-  justify-content:flex-end;
+  justify-content: flex-end;
 }
 table.preview {
-   overflow-y:scroll;
-   height:200px;
-   display:block;
-   border-collapse:collapse;
-   font-size: 14px;
-   resize: both;
+  overflow-y: scroll;
+  height: 200px;
+  display: block;
+  border-collapse: collapse;
+  font-size: 14px;
+  resize: both;
 
-   background-color: #FFFFFF;
-   border: 1px solid #c9c9c9;
-   border-radius: 3px;
-   margin: 0 0 20px 0;
+  background-color: #ffffff;
+  border: 1px solid #c9c9c9;
+  border-radius: 3px;
+  margin: 0 0 20px 0;
 }
 
 .preview-row {
@@ -151,6 +155,6 @@ table.preview {
   border-bottom: none;
   background-color: #f7f7f7;
   text-align: right;
-  width:28px;
+  width: 28px;
 }
 </style>
