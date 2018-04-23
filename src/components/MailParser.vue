@@ -4,16 +4,13 @@
       <p>This tool will help parse Canadian mailing addresses providing they're all in one cell.</p>
       <span>1. Cut/paste mail addresses below (one on each line). Click PARSE ADDRESSES when ready.</span>
     </div>
-
     <div class="codemirror-container">
       <textarea class="form-control" rows="8" v-model="code"></textarea>
     </div>
-
     <button type="button" class="btn btn-primary" @click="submitCode">Parse Addresses</button>
     <button type="button" class="btn btn-primary" @click="resetAll">
       Reset
     </button>
-
     <br /><br />
     <div>
       <span>2. Preview and download</span> <span v-show="numberOfParsedAddresses > 0">
