@@ -23,7 +23,7 @@
         <th class="preview-row">#</th>
         <th align="left">mail_address1</th>
         <th align="left">mail_city</th>
-        <th align="left">mail_province</th>
+        <th align="left">mail_prov</th>
         <th align="left">mail_postal</th>
         <th align="left">mail_country</th>
         <th align="left">other</th>
