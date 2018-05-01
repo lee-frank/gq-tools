@@ -34,7 +34,7 @@
         <td class="preview-row">{{index+1}}</td>
         <td>{{value.mail_address1}}</td>
         <td>{{value.mail_city}}</td>
-        <td>{{value.mail_province}}</td>
+        <td>{{value.mail_prov}}</td>
         <td>{{value.mail_postal}}</td>
         <td>{{value.mail_country}}</td>
         <td>{{value.other}}</td>
@@ -76,7 +76,7 @@ export default {
           mail_address1: parsed.address,
           mail_address2: '',
           mail_city: parsed.city,
-          mail_province: parsed.province,
+          mail_prov: parsed.province,
           mail_postal: parsed.postal,
           mail_country: parsed.country,
           other: `${parsed.name} ${parsed.email} ${parsed.phone} ${
