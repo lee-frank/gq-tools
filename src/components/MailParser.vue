@@ -2,7 +2,7 @@
   <div>
     <div>
       <p>This tool will help parse Canadian mailing addresses providing they're all in one cell.</p>
-      <span>1. Cut/paste mail addresses below (one on each line). Click PARSE ADDRESSES when ready.</span>
+      <span>Cut/paste mail addresses below (one on each line). Click PARSE ADDRESSES when ready.</span>
     </div>
     <div class="codemirror-container">
       <textarea class="form-control" rows="8" v-model="code"></textarea>
