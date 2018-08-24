@@ -3,7 +3,7 @@
     <div class="select-container">
         <div class="row">
           <div class="col-md-3 col-sm-12">
-            <div>Select event date: <input class="date-select" type="date" v-model="startDate"></div>
+            <div>Select event date: <input @input="populateDays(startDate)" class="date-select" type="date" v-model="startDate"></div>
           </div>
           <div class="col-md-4 col-sm-12">
             Select event type:
@@ -19,18 +19,18 @@
     <div v-show="startDate && type==='agm'">
       <hr>
       <div><strong>AGM Date</strong>: {{ startDateFormatted }}</div>
-      <div><strong>Pre-Consent</strong>: {{ subtractDays(this.startDate, 42) }}</div>
-      <div><strong>Pre-Notice</strong>: {{ subtractDays(this.startDate, 35) }}</div>
-      <div><strong>Notice Of Service</strong>: {{ subtractDays(this.startDate, 15) }}</div>
+      <div class="date-div"><strong>Pre-Consent</strong>: {{ formatDay(preConsentDate) }}<input id="preConsent" class="date-select" type="date" v-model="preConsentDate"></div>
+      <div class="date-div"><strong>Pre-Notice</strong>:{{ formatDay(preNoticeDate) }}<input class="date-select" type="date" v-model="preNoticeDate"></div>
+      <div class="date-div"><strong>Notice Of Service</strong>: {{ formatDay(serviceOfNoticeDate) }} <input class="date-select" type="date" v-model="serviceOfNoticeDate"></div>
       <hr>
       We are excited to be serving notice and collecting electronic proxies for your upcoming Annual General Meeting on <strong>{{ startDateFormatted }}</strong>. Please find the service agreement attached below. Please return the signed service agreement at your earliest convenience.
       <br><br>
       Just a couple of things before we start:
       <br><br>
       <ul>
-        <li>Your pre-consent campaign is scheduled to begin: <strong>{{ subtractDays(this.startDate, 42) }}</strong></li>
-        <li>Your pre-notice is also scheduled for: <strong>{{ subtractDays(this.startDate, 35) }}</strong></li>
-        <li>Service of Notice is scheduled for <strong>{{ subtractDays(this.startDate, 15) }}</strong></li>
+        <li>Your pre-consent campaign is scheduled to begin: <strong>{{ formatDay(preConsentDate) }}</strong></li>
+        <li>Your pre-notice is also scheduled for: <strong>{{ formatDay(preNoticeDate) }}</strong></li>
+        <li>Service of Notice is scheduled for <strong>{{ formatDay(serviceOfNoticeDate) }}</strong></li>
       </ul>
       Please advise if these dates are OK.
       <br><br>
@@ -51,7 +51,7 @@
               <p>Owner name, emails, and mailing addresses in our data format</p>
               <p><strong>*Note: that if you have owner data in a format of your own, you are free to send this to us instead.</strong></p>          
             </td>
-            <td>{{ subtractDays(this.startDate, 45) }}</td>
+            <td><strong>{{ subtractDays(this.preConsentDate, 3) }}</strong></td>
           </tr>
           <tr>
             <th scope="row">2</th>
@@ -61,7 +61,7 @@
                 <p>Notify owners to expect emails from GetQuorum.</p>
                 <p><strong>*Note: we will not be able to move along with the campaign if we do not receive your approval of the above items</strong></p>
             </td>
-            <td>{{ subtractDays(this.startDate, 43) }}</td>
+            <td><strong>{{ subtractDays(this.preConsentDate, 1) }}</strong></td>
           </tr>           
           <tr>
             <th scope="row">3</th>
@@ -70,7 +70,7 @@
               <p>Review and approve the Pre-Notice email that will be sent to owners</p>
               <p><strong>*Note: we will not be able to proceed with the campaign if we do not receive your approval of the above items</strong></p>
             </td>
-            <td>{{ subtractDays(this.startDate, 38) }}</td>
+            <td><strong>{{ subtractDays(this.preNoticeDate, 3) }}</strong></td>
           </tr>
           <tr>
             <th scope="row">4</th>
@@ -78,7 +78,7 @@
               <p>The meeting notice package, combined into a single PDF or DOC, in the order to be printed.</p>
               <p>The hardcopy version of the package will be printed double-sided in black-ink on white paper. Please provide instructions if you’d like it printed differently.</p>
             </td>
-            <td>{{ subtractDays(this.startDate, 18) }}</td>
+            <td><strong>{{ subtractDays(this.serviceOfNoticeDate, 3) }}</strong></td>
           </tr>
           <tr>
             <th scope="row">5</th>
@@ -88,7 +88,7 @@
                 <p>Review and approve AGM package printing instructions</p>
                 <p><strong>*Note: we will not be able to move along with the campaign if we do not receive your approval of the above items</strong></p>
             </td>
-            <td>{{ subtractDays(this.startDate, 16) }}</td>
+            <td><strong>{{ subtractDays(this.serviceOfNoticeDate, 1) }}</strong></td>
           </tr>                  
         </tbody>
       </table>
@@ -167,6 +167,9 @@ export default {
   data() {
     return {
       startDate: '',
+      preConsentDate: '',
+      preNoticeDate: '',
+      serviceOfNoticeDate: '',
       type: 'agm'
     };
   },
@@ -174,7 +177,22 @@ export default {
     subtractDays(date, days) {
       return moment(date)
         .subtract(days, 'days')
-        .format('dddd, MMMM DD, YYYY');
+        .format('dddd, MMMM D, YYYY');
+    },
+    formatDay(date) {
+      return moment(date).format('dddd, MMMM D, YYYY');
+    },
+    checkDate(date) {
+      if (date === '') {
+        return date;
+      } else {
+        return this.formatDay(date);
+      }
+    },
+    populateDays(date) {
+      this.preConsentDate = this.subtractDays(date, 42);
+      this.preNoticeDate = this.subtractDays(date, 35);
+      this.serviceOfNoticeDate = this.subtractDays(date, 15);
     }
   }
 };
@@ -185,9 +203,12 @@ export default {
   width: 100%;
   min-height: 200px;
 }
+.date-div {
+  padding: 10px 5px 10px 0px;
+}
 .date-select {
   height: calc(2.25rem + 2px);
-  padding: 10px 5px 10px 10px;
+  padding: 10px 5px 10px 15px;
   line-height: 1.5;
   color: #495057;
   vertical-align: middle;
